@@ -1,0 +1,18 @@
+{
+  "kids": [
+    {
+      "id": "big-kid",
+      "name": "Big Kid",
+      "age": 9,
+      "emoji": "🦊",
+      "color": "#7c5cff"
+    },
+    {
+      "id": "little-kid",
+      "name": "Little Kid",
+      "age": 6,
+      "emoji": "🐸",
+      "color": "#00b894"
+    }
+  ]
+}
