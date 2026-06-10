@@ -6,7 +6,7 @@ import { buildSystemPrompt } from "./prompt.js";
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const WORKSPACES = path.join(ROOT, "workspaces");
 
-const TURN_TIMEOUT_MS = 6 * 60 * 1000;
+const TURN_TIMEOUT_MS = 10 * 60 * 1000;
 const TRANSCRIPT_LIMIT = 400; // messages kept per profile
 
 export function workspaceDir(profileId) {

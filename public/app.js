@@ -4,8 +4,25 @@ let profile = null;
 let busy = false;
 let lastSent = null; // for the "try again" affordance
 let currentLessonFile = null;
+let pendingAsk = null; // a lesson-button tap that arrived mid-turn
 
 init();
+
+// Lessons speak into the chat: a sandboxed lesson can post
+// { lectern: "ask", text } and it becomes the learner's next message.
+window.addEventListener("message", (e) => {
+  const frame = $("lesson-frame");
+  if (!profile || !frame || e.source !== frame.contentWindow) return;
+  const d = e.data;
+  if (!d || d.lectern !== "ask" || typeof d.text !== "string") return;
+  const text = d.text.slice(0, 300).trim();
+  if (!text) return;
+  if (busy) {
+    pendingAsk = text; // sent as soon as the current turn finishes
+    return;
+  }
+  sendMessage(text);
+});
 
 async function init() {
   let profiles;
@@ -50,10 +67,13 @@ async function pickProfile(p) {
   } catch { /* a fresh chat is an acceptable fallback */ }
 
   let lastLesson = null;
-  for (const m of history.slice(-40)) {
-    addMsg(m.role === "user" ? "kid" : "tutor", m.text);
+  const recent = history.slice(-40);
+  recent.forEach((m, i) => {
+    const el = addMsg(m.role === "user" ? "kid" : "tutor", m.text);
+    // If the conversation paused on a choice, restore it tappable.
+    if (m.role !== "user" && i === recent.length - 1) renderChoices(el);
     for (const lesson of m.lessons || []) lastLesson = lesson;
-  }
+  });
   if (!history.length) {
     addMsg("tutor", `Hi ${p.name}! ${p.emoji} What do you want to learn about today?`);
   }
@@ -121,11 +141,46 @@ async function sendMessage(text) {
   } finally {
     typing.classList.remove("typing");
     if (!typing.textContent) typing.remove();
+    else renderChoices(typing);
     if (statusEl) statusEl.remove();
     busy = false;
     $("send-btn").disabled = false;
-    $("chat-input").focus();
+    if (pendingAsk) {
+      const queued = pendingAsk;
+      pendingAsk = null;
+      sendMessage(queued);
+    } else {
+      $("chat-input").focus();
+    }
   }
+}
+
+/* ---------- choice chips ----------
+   Tutor messages may end with choice lines like "» Why do cats purr? 🐱".
+   Strip them from the bubble and render as tappable chips. */
+function renderChoices(bubble) {
+  const lines = bubble.textContent.split("\n");
+  const choices = [];
+  while (lines.length && /^»\s+\S/.test(lines[lines.length - 1].trim())) {
+    choices.unshift(lines.pop().trim().replace(/^»\s+/, ""));
+  }
+  if (!choices.length || choices.length > 4) return;
+  bubble.textContent = lines.join("\n").replace(/\s+$/, "");
+  const row = document.createElement("div");
+  row.className = "chips";
+  for (const choice of choices) {
+    const chip = document.createElement("button");
+    chip.className = "chip";
+    chip.textContent = choice;
+    chip.onclick = () => {
+      if (busy) return;
+      row.querySelectorAll(".chip").forEach((c) => (c.disabled = true));
+      chip.classList.add("chosen");
+      sendMessage(choice);
+    };
+    row.appendChild(chip);
+  }
+  bubble.insertAdjacentElement("afterend", row);
 }
 
 function showError(message, retryable) {
