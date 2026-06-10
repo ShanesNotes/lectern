@@ -2,10 +2,11 @@ import express from "express";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { chatTurn, ensureWorkspace, listLessons } from "./teacher.js";
+import { chatTurn, ensureWorkspace, listLessons, loadTranscript } from "./teacher.js";
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
+const HOST = process.env.HOST || "0.0.0.0"; // reachable from every device in the house
 
 // Auth: the Agent SDK launches the Claude Code CLI, which uses your existing
 // Claude Code login (subscription) — no API key needed. Headless machines can
@@ -33,11 +34,20 @@ const profiles = JSON.parse(
 for (const profile of profiles) ensureWorkspace(profile);
 
 const app = express();
-app.use(express.json());
+app.disable("x-powered-by");
+app.use(express.json({ limit: "16kb" }));
 app.use(express.static(path.join(ROOT, "public")));
 
 // Lesson HTML (and anything else in a workspace) is served read-only.
-app.use("/workspaces", express.static(path.join(ROOT, "workspaces")));
+app.use("/workspaces", express.static(path.join(ROOT, "workspaces"), { dotfiles: "deny" }));
+
+const findProfile = (req, res) => {
+  const profile = profiles.find((p) => p.id === req.params.id);
+  if (!profile) res.status(404).json({ error: "unknown profile" });
+  return profile;
+};
+
+app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
 app.get("/api/profiles", (_req, res) => {
   res.json(
@@ -48,15 +58,19 @@ app.get("/api/profiles", (_req, res) => {
 });
 
 app.get("/api/profiles/:id/lessons", (req, res) => {
-  const profile = profiles.find((p) => p.id === req.params.id);
-  if (!profile) return res.status(404).json({ error: "unknown profile" });
-  res.json(listLessons(profile.id));
+  const profile = findProfile(req, res);
+  if (profile) res.json(listLessons(profile.id));
+});
+
+app.get("/api/profiles/:id/history", (req, res) => {
+  const profile = findProfile(req, res);
+  if (profile) res.json(loadTranscript(profile.id));
 });
 
 // One chat turn, streamed back as Server-Sent Events.
 app.post("/api/profiles/:id/chat", async (req, res) => {
-  const profile = profiles.find((p) => p.id === req.params.id);
-  if (!profile) return res.status(404).json({ error: "unknown profile" });
+  const profile = findProfile(req, res);
+  if (!profile) return;
 
   const text = String(req.body?.message || "").slice(0, 2000).trim();
   if (!text) return res.status(400).json({ error: "empty message" });
@@ -69,25 +83,68 @@ app.post("/api/profiles/:id/chat", async (req, res) => {
   });
 
   const emit = (event, data) => {
-    res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+    if (!res.writableEnded) {
+      res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+    }
   };
 
-  // Stop the turn if the browser goes away. (Must watch the response/socket —
-  // req "close" fires as soon as the request body is received on Node 15+.)
+  // Keep the stream alive through proxies and sleepy wifi.
+  const heartbeat = setInterval(() => {
+    if (!res.writableEnded) res.write(": ping\n\n");
+  }, 15000);
+
+  // Cancel the turn (and the agent subprocess) if the browser goes away.
+  // (Must watch the response — req "close" fires once the body arrives on Node 15+.)
   const abort = new AbortController();
   res.on("close", () => {
     if (!res.writableEnded) abort.abort();
   });
 
-  await chatTurn(profile, text, emit, { signal: abort.signal });
-  res.end();
+  try {
+    await chatTurn(profile, text, emit, abort);
+  } finally {
+    clearInterval(heartbeat);
+    res.end();
+  }
 });
 
-app.listen(PORT, () => {
-  console.log(`\n📖 Lectern is ready!  →  http://localhost:${PORT}\n`);
+// JSON for unknown API routes; never leak stack traces.
+app.use("/api", (_req, res) => res.status(404).json({ error: "not found" }));
+app.use((err, _req, res, _next) => {
+  console.error("server error:", err);
+  if (!res.headersSent) res.status(500).json({ error: "server error" });
+  else res.end();
+});
+
+const server = app.listen(PORT, HOST, () => {
+  console.log(`\n📖 Lectern is ready!`);
+  console.log(`   This machine:  http://localhost:${PORT}`);
+  const lan = Object.values(os.networkInterfaces())
+    .flat()
+    .find((i) => i && i.family === "IPv4" && !i.internal);
+  if (lan) console.log(`   Around the house:  http://${lan.address}:${PORT}`);
   console.log(
-    `   Profiles: ${profiles
+    `\n   Profiles: ${profiles
       .map((p) => `${p.emoji} ${p.name}${p.adult ? "" : ` (${p.age})`}`)
       .join("   ")}\n`
   );
 });
+
+server.on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(
+      `\n✖ Port ${PORT} is already in use. Is Lectern already running?\n` +
+        `  Start on another port with: PORT=${PORT + 1} npm start\n`
+    );
+    process.exit(1);
+  }
+  throw err;
+});
+
+for (const signal of ["SIGINT", "SIGTERM"]) {
+  process.on(signal, () => {
+    console.log("\n📖 Lectern closing up. Bye!");
+    server.close(() => process.exit(0));
+    setTimeout(() => process.exit(0), 2000).unref();
+  });
+}

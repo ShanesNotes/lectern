@@ -3,44 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lectern 📖</title>
+  <title>Lectern</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Profile picker -->
   <section id="picker" class="screen">
-    <h1 class="logo">📖 Lectern</h1>
-    <p class="tagline">Who's learning today?</p>
-    <div id="kid-cards" class="kid-cards"></div>
+    <div class="picker-page">
+      <h1 class="wordmark">Lectern</h1>
+      <p class="motto">a place to learn things, kept just for you</p>
+      <hr class="rule" />
+      <p class="prompt-line">Who is learning today?</p>
+      <div id="kid-cards" class="medallions"></div>
+    </div>
   </section>
 
   <!-- Main app -->
   <section id="app" class="screen hidden">
-    <header class="topbar">
-      <button id="switch-kid" class="pill" title="Switch kid">👋</button>
-      <span id="kid-label" class="kid-label"></span>
-      <span class="logo-small">📖 Lectern</span>
+    <header class="plaque">
+      <button id="switch-kid" class="quiet-btn" title="Switch learner">⟲ switch</button>
+      <span id="kid-label" class="learner"></span>
+      <span class="wordmark-small">Lectern</span>
     </header>
 
     <main class="panels">
-      <div class="chat-panel">
+      <div class="field chat-field">
         <div id="messages" class="messages"></div>
         <form id="chat-form" class="chat-form" autocomplete="off">
           <input id="chat-input" type="text" maxlength="500"
                  placeholder="What do you want to learn about?" />
-          <button id="send-btn" type="submit">Go! 🚀</button>
+          <button id="send-btn" type="submit">Ask</button>
         </form>
       </div>
 
-      <div class="lesson-panel">
+      <div class="field lesson-field">
         <div class="lesson-bar">
-          <span class="lesson-bar-title">✨ Lesson</span>
-          <button id="shelf-btn" class="pill">📚 My Lessons</button>
+          <span class="lesson-label">Lesson</span>
+          <span id="lesson-title" class="lesson-title"></span>
+          <button id="shelf-btn" class="quiet-btn">Lessons ▾</button>
         </div>
         <div id="lesson-holder" class="lesson-holder">
           <div id="lesson-empty" class="lesson-empty">
-            <div class="lesson-empty-emoji">🎈</div>
-            <p>Your lesson will pop up here!</p>
+            <div class="empty-mark">✦</div>
+            <p>Your lesson will appear here.</p>
           </div>
           <iframe id="lesson-frame" class="hidden" title="Lesson"
                   sandbox="allow-scripts"></iframe>

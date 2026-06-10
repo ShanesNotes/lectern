@@ -7,7 +7,10 @@ You (or your kid) type in a chat box. A Claude tutor chats back, researches real
 and writes a **beautiful, interactive HTML lesson** that appears instantly in a panel
 right beside the chat — no terminal, no separate browser tabs.
 
-See `GOAL.md` for the full design.
+See `GOAL.md` for the original design and `GOAL-POLISH.md` for the polish-pass user
+stories. The harness UI follows the "symbolic illuminated design" language from
+[ShanesNotes/symbolic-world](https://github.com/ShanesNotes/symbolic-world) — a calm,
+bounded page on warm paper that stays out of the way and lets the lessons do the work.
 
 ## Quick start
 
@@ -19,6 +22,11 @@ npm start
 Then open **http://localhost:3000**, pick a profile, and ask for a lesson:
 
 > "teach me about volcanoes!" 🌋
+
+The server also binds to your LAN and prints an `http://192.168.x.x:3000` address on
+startup — open that from the kids' tablet or any device in the house. Conversations and
+lessons persist per profile, so refreshing the page (or coming back tomorrow) drops you
+right back where you left off.
 
 Requirements: Node 18+ and a machine where you're logged into Claude Code.
 
