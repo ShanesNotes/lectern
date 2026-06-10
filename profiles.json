@@ -1,0 +1,25 @@
+{
+  "profiles": [
+    {
+      "id": "dad",
+      "name": "Dad",
+      "adult": true,
+      "emoji": "🦉",
+      "color": "#3867d6"
+    },
+    {
+      "id": "hazel",
+      "name": "Hazel",
+      "age": 9,
+      "emoji": "🦊",
+      "color": "#7c5cff"
+    },
+    {
+      "id": "willem",
+      "name": "Willem",
+      "age": 6,
+      "emoji": "🐸",
+      "color": "#00b894"
+    }
+  ]
+}

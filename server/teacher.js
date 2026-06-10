@@ -6,35 +6,35 @@ import { buildSystemPrompt } from "./prompt.js";
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const WORKSPACES = path.join(ROOT, "workspaces");
 
-export function workspaceDir(kidId) {
-  return path.join(WORKSPACES, kidId);
+export function workspaceDir(profileId) {
+  return path.join(WORKSPACES, profileId);
 }
 
-export function ensureWorkspace(kid) {
-  const dir = workspaceDir(kid.id);
+export function ensureWorkspace(profile) {
+  const dir = workspaceDir(profile.id);
   fs.mkdirSync(path.join(dir, "lessons"), { recursive: true });
   fs.mkdirSync(path.join(dir, "learning-records"), { recursive: true });
   return dir;
 }
 
-function sessionFile(kidId) {
-  return path.join(workspaceDir(kidId), ".session.json");
+function sessionFile(profileId) {
+  return path.join(workspaceDir(profileId), ".session.json");
 }
 
-function loadSessionId(kidId) {
+function loadSessionId(profileId) {
   try {
-    return JSON.parse(fs.readFileSync(sessionFile(kidId), "utf8")).sessionId;
+    return JSON.parse(fs.readFileSync(sessionFile(profileId), "utf8")).sessionId;
   } catch {
     return undefined;
   }
 }
 
-function saveSessionId(kidId, sessionId) {
-  fs.writeFileSync(sessionFile(kidId), JSON.stringify({ sessionId }));
+function saveSessionId(profileId, sessionId) {
+  fs.writeFileSync(sessionFile(profileId), JSON.stringify({ sessionId }));
 }
 
-export function listLessons(kidId) {
-  const dir = path.join(workspaceDir(kidId), "lessons");
+export function listLessons(profileId) {
+  const dir = path.join(workspaceDir(profileId), "lessons");
   let files = [];
   try {
     files = fs.readdirSync(dir).filter((f) => f.endsWith(".html"));
@@ -46,7 +46,7 @@ export function listLessons(kidId) {
     .map((f) => ({
       file: f,
       title: titleFromFilename(f),
-      url: `/workspaces/${kidId}/lessons/${f}`,
+      url: `/workspaces/${profileId}/lessons/${f}`,
     }));
 }
 
@@ -70,18 +70,18 @@ const TOOL_STATUS = {
 };
 
 /**
- * Run one chat turn for a kid. Emits events via the `emit` callback:
+ * Run one chat turn for a profile. Emits events via the `emit` callback:
  *   emit("text",   { text })            — streamed assistant text delta
  *   emit("status", { text })            — friendly tool-activity status line
  *   emit("lesson", { url, title, file })— a lesson file was written/updated
  *   emit("done",   { })                 — turn finished
  *   emit("error",  { message })
  */
-export async function chatTurn(kid, userMessage, emit, { signal } = {}) {
-  const cwd = ensureWorkspace(kid);
-  const resume = loadSessionId(kid.id);
+export async function chatTurn(profile, userMessage, emit, { signal } = {}) {
+  const cwd = ensureWorkspace(profile);
+  const resume = loadSessionId(profile.id);
 
-  // Deny any file mutation outside this kid's workspace.
+  // Deny any file mutation outside this profile's workspace.
   const guardWrites = async (input) => {
     const target = input.tool_input?.file_path;
     if (target && !path.resolve(cwd, String(target)).startsWith(cwd + path.sep)) {
@@ -107,7 +107,7 @@ export async function chatTurn(kid, userMessage, emit, { signal } = {}) {
       emit("lesson", {
         file,
         title: titleFromFilename(file),
-        url: `/workspaces/${kid.id}/lessons/${file}`,
+        url: `/workspaces/${profile.id}/lessons/${file}`,
       });
     }
     return {};
@@ -122,7 +122,7 @@ export async function chatTurn(kid, userMessage, emit, { signal } = {}) {
         cwd,
         resume,
         model: process.env.LECTERN_MODEL || undefined,
-        systemPrompt: buildSystemPrompt(kid),
+        systemPrompt: buildSystemPrompt(profile),
         allowedTools: ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
         disallowedTools: ["Bash", "Agent", "AskUserQuestion"],
         // acceptEdits + allowedTools auto-approves everything the tutor needs
@@ -166,7 +166,7 @@ export async function chatTurn(kid, userMessage, emit, { signal } = {}) {
       }
     }
 
-    if (sessionId) saveSessionId(kid.id, sessionId);
+    if (sessionId) saveSessionId(profile.id, sessionId);
     emit("done", {});
   } catch (err) {
     console.error("chatTurn failed:", err);

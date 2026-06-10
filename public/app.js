@@ -6,7 +6,7 @@ let busy = false;
 init();
 
 async function init() {
-  const kids = await fetch("/api/kids").then((r) => r.json());
+  const kids = await fetch("/api/profiles").then((r) => r.json());
   const cards = $("kid-cards");
   for (const k of kids) {
     const btn = document.createElement("button");
@@ -14,20 +14,20 @@ async function init() {
     btn.style.setProperty("--kid-color", k.color);
     btn.innerHTML = `<span class="emoji">${k.emoji}</span>
       <span class="name">${escapeHtml(k.name)}</span>
-      <span class="age">age ${k.age}</span>`;
+      <span class="age">${k.adult ? "grown-up" : `age ${k.age}`}</span>`;
     btn.onclick = () => pickKid(k);
     cards.appendChild(btn);
   }
 
   // Remember last kid so a refresh doesn't lose the session.
-  const lastId = localStorage.getItem("lectern-kid");
+  const lastId = localStorage.getItem("lectern-profile");
   const last = kids.find((k) => k.id === lastId);
   if (last) pickKid(last);
 }
 
 async function pickKid(k) {
   kid = k;
-  localStorage.setItem("lectern-kid", k.id);
+  localStorage.setItem("lectern-profile", k.id);
   $("kid-label").textContent = `${k.emoji} ${k.name}`;
   $("picker").classList.add("hidden");
   $("app").classList.remove("hidden");
@@ -43,7 +43,7 @@ async function pickKid(k) {
 }
 
 $("switch-kid").onclick = () => {
-  localStorage.removeItem("lectern-kid");
+  localStorage.removeItem("lectern-profile");
   location.reload();
 };
 
@@ -68,7 +68,7 @@ async function sendMessage(text) {
   let statusEl = null;
 
   try {
-    const res = await fetch(`/api/kids/${kid.id}/chat`, {
+    const res = await fetch(`/api/profiles/${kid.id}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: text }),
@@ -150,7 +150,7 @@ function showLesson(lesson, { celebrate } = {}) {
 }
 
 async function fetchLessons() {
-  return fetch(`/api/kids/${kid.id}/lessons`).then((r) => r.json());
+  return fetch(`/api/profiles/${kid.id}/lessons`).then((r) => r.json());
 }
 
 $("shelf-btn").onclick = async () => {
