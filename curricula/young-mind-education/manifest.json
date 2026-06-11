@@ -1,0 +1,884 @@
+{
+  "manifestVersion": "0.3.0",
+  "id": "young-mind-education.hellenic-seed",
+  "title": "Young Mind Education — Hellenic Seed Curriculum",
+  "status": "draft-pr-ready",
+  "audience": {
+    "ageMin": 8,
+    "ageIdeal": 10,
+    "ageMax": 12,
+    "stage": "late grammar / early logic",
+    "notes": "Designed for children who can listen to rich stories, narrate back, ask why/how questions, and begin proof-like thinking."
+  },
+  "designIntent": {
+    "oneSentence": "A small, local-first corpus that lets Lectern suggest guided lessons by subject without becoming a bloated LMS or generic book list.",
+    "distillationRules": [
+      "Prefer one high-yield anchor per intellectual habit: story, moral judgment, history, proof, observation, language, and beauty.",
+      "Prefer public-domain or locally-authored materials that can live inside the repo or a sibling local source library.",
+      "Prefer texts that can be chunked into short teachable units: fable, episode, life, map scene, proposition, nature observation, picture-study plate.",
+      "Do not treat commercial curricula as source texts. Store them only as optional owned-required metadata.",
+      "Start narrow: add expansion texts only when a learner has demonstrated narration, attention, and recall on the seed anchors."
+    ]
+  },
+  "localSourcePolicy": {
+    "root": "curricula/young-mind-education/sources",
+    "statuses": {
+      "public-domain-download": "May be imported into the local source tree after jurisdiction/license check and source attribution.",
+      "public-domain-scan": "Use a local OCR or manually cleaned edition from a public-domain scan; keep scan attribution in sidecar metadata.",
+      "local-original": "Authored inside this repo or family library; safe to distribute with the app if the author permits.",
+      "curated-public-domain-assets": "Images/music metadata selected from public-domain museum/library collections; store attribution per asset.",
+      "metadata-only": "A target for future sourcing; do not assume text is locally present.",
+      "owned-required": "Useful pedagogically, but not imported or redistributed; available only if the family owns a copy."
+    },
+    "sidecarMetadataShape": {
+      "sourceId": "string",
+      "upstream": "string",
+      "licenseHint": "string",
+      "importedAt": "YYYY-MM-DD",
+      "preparedBy": "string",
+      "normalizationNotes": [
+        "string"
+      ]
+    }
+  },
+  "subjects": [
+    {
+      "id": "language-arts-literature",
+      "schoolLabel": "Language Arts",
+      "title": "Language Arts & Literature",
+      "habit": "narration, attention to words, plot sequence, poetic memory",
+      "seedSourceIds": [
+        "aesop-fables-vernon-jones",
+        "colum-adventures-odysseus-tales-troy"
+      ]
+    },
+    {
+      "id": "history-geography",
+      "schoolLabel": "History",
+      "title": "History & Geography",
+      "habit": "chronology, biography, maps, cause and consequence",
+      "seedSourceIds": [
+        "famous-men-greece-haaren-poland",
+        "boys-girls-herodotus-white"
+      ]
+    },
+    {
+      "id": "math-logic",
+      "schoolLabel": "Math",
+      "title": "Mathematics & Logic",
+      "habit": "visual reasoning, construction, proof, definitions",
+      "seedSourceIds": [
+        "euclid-book1-casey-byrne",
+        "pre-euclid-geometry-cards-local"
+      ]
+    },
+    {
+      "id": "science-nature",
+      "schoolLabel": "Science",
+      "title": "Science & Nature",
+      "habit": "direct observation before explanation",
+      "seedSourceIds": [
+        "comstock-handbook-nature-study-selected"
+      ]
+    },
+    {
+      "id": "classical-languages",
+      "schoolLabel": "Languages",
+      "title": "Classical Languages",
+      "habit": "alphabet, roots, declension awareness, pronunciation, copywork",
+      "seedSourceIds": [
+        "greek-latin-starter-cards-local"
+      ]
+    },
+    {
+      "id": "art-music-beauty",
+      "schoolLabel": "Art & Music",
+      "title": "Art, Music & Beauty",
+      "habit": "picture study, form, proportion, beauty, descriptive memory",
+      "seedSourceIds": [
+        "greek-art-picture-study-pack-local",
+        "euclid-book1-casey-byrne"
+      ]
+    },
+    {
+      "id": "civics-virtue",
+      "schoolLabel": "Civics",
+      "title": "Civics & Virtue",
+      "habit": "justice, courage, prudence, friendship, citizenship, deliberation",
+      "seedSourceIds": [
+        "aesop-fables-vernon-jones",
+        "colum-adventures-odysseus-tales-troy",
+        "famous-men-greece-haaren-poland"
+      ]
+    }
+  ],
+  "lessonOperations": [
+    {
+      "id": "narrate",
+      "label": "Narrate",
+      "description": "The child tells the episode back in order, with names, places, and one striking phrase."
+    },
+    {
+      "id": "ask-why",
+      "label": "Ask why",
+      "description": "The tutor asks one cause, motive, or justice question instead of a recall quiz."
+    },
+    {
+      "id": "map-or-timeline",
+      "label": "Map or timeline",
+      "description": "The child anchors an episode to a place, route, date range, ruler, or before/after sequence."
+    },
+    {
+      "id": "copy-or-memorize",
+      "label": "Copy or memorize",
+      "description": "The child copies a sentence, term, name, root, definition, or beautiful phrase."
+    },
+    {
+      "id": "draw-or-demonstrate",
+      "label": "Draw or demonstrate",
+      "description": "The child draws the proof, animal, plant, tool, artwork, route, or scene and explains it."
+    },
+    {
+      "id": "compare",
+      "label": "Compare",
+      "description": "The child compares two heroes, choices, proofs, observations, or works of art."
+    }
+  ],
+  "seedBundle": {
+    "id": "hellenic-seed-8-anchor",
+    "title": "The Eight-Anchor Hellenic Seed",
+    "description": "The minimal corpus I would start with before adding a broader classics shelf.",
+    "sourceTextIds": [
+      "aesop-fables-vernon-jones",
+      "colum-adventures-odysseus-tales-troy",
+      "famous-men-greece-haaren-poland",
+      "boys-girls-herodotus-white",
+      "pre-euclid-geometry-cards-local",
+      "euclid-book1-casey-byrne",
+      "comstock-handbook-nature-study-selected",
+      "greek-latin-starter-cards-local",
+      "greek-art-picture-study-pack-local"
+    ],
+    "weeklyLoop": [
+      "1 epic/story lesson",
+      "1 history/biography lesson",
+      "1 geometry/proof or language lesson",
+      "1 nature or picture-study lesson",
+      "1 short Aesop-style virtue discussion as warmup or review"
+    ],
+    "completionEvidence": [
+      "Child narrated at least 12 story/history episodes without heavy prompting.",
+      "Child placed at least 10 people/events/places on a map or timeline.",
+      "Child demonstrated at least 6 geometry ideas with a drawing or physical model.",
+      "Child made at least 8 nature or art observations in their own words.",
+      "Child copied or remembered at least 20 Greek/Latin names, roots, or phrases."
+    ]
+  },
+  "sourceTexts": [
+    {
+      "id": "aesop-fables-vernon-jones",
+      "title": "Aesop's Fables: A New Translation",
+      "displayTitle": "Aesop's Fables",
+      "author": "Aesop; V. S. Vernon Jones, translator; G. K. Chesterton, commentator; Arthur Rackham, illustrator",
+      "tier": "seed-anchor",
+      "role": "moral-compression-and-discussion-warmup",
+      "priority": 10,
+      "essential": true,
+      "subjects": [
+        "language-arts-literature",
+        "civics-virtue"
+      ],
+      "strands": [
+        "fable",
+        "moral-imagination",
+        "narration",
+        "analogy",
+        "prudence"
+      ],
+      "ageBand": {
+        "min": 7,
+        "max": 12
+      },
+      "whyDistilled": "The shortest high-yield unit in the corpus: one fable can produce narration, moral judgment, analogy, and a child's own example in ten minutes.",
+      "recommendedScope": {
+        "mode": "selected",
+        "targetUnits": 40,
+        "selectionNotes": "Choose animal and civic fables first; avoid using the whole book as a march-through assignment."
+      },
+      "unitShape": {
+        "unitKind": "fable",
+        "typicalMinutes": {
+          "min": 8,
+          "max": 15
+        },
+        "defaultOperations": [
+          "narrate",
+          "ask-why",
+          "compare"
+        ]
+      },
+      "guidedPrompts": [
+        "Tell the fable back in three beats: problem, choice, consequence.",
+        "Was the character foolish, wicked, unlucky, or simply unprepared?",
+        "Invent a modern version of the same fable."
+      ],
+      "local": {
+        "status": "public-domain-download",
+        "path": "sources/literature/aesop-fables-vernon-jones.md",
+        "upstream": "Project Gutenberg eBook 11339",
+        "licenseHint": "public-domain-us"
+      },
+      "expandsTo": [
+        "plutarch-greek-lives-selected",
+        "virtue-question-bank-local"
+      ]
+    },
+    {
+      "id": "colum-adventures-odysseus-tales-troy",
+      "title": "The Adventures of Odysseus and The Tales of Troy",
+      "displayTitle": "The Children's Homer",
+      "author": "Padraic Colum; Willy Pogány, illustrator",
+      "tier": "seed-anchor",
+      "role": "epic-story-spine",
+      "priority": 20,
+      "essential": true,
+      "subjects": [
+        "language-arts-literature",
+        "history-geography",
+        "civics-virtue",
+        "art-music-beauty"
+      ],
+      "strands": [
+        "Homeric-retelling",
+        "Trojan-War",
+        "Odysseus",
+        "homecoming",
+        "heroic-choice",
+        "poetic-language"
+      ],
+      "ageBand": {
+        "min": 9,
+        "max": 12
+      },
+      "whyDistilled": "One book gives the Trojan frame, Odysseus, Telemachus, homecoming, gods, hospitality, courage, pride, cunning, and enough elevated diction to prepare later Homer without forcing a young child into adult translations.",
+      "recommendedScope": {
+        "mode": "whole-or-selected",
+        "targetUnits": 18,
+        "selectionNotes": "Use as the main epic spine. Chunk by episode, not by page count."
+      },
+      "unitShape": {
+        "unitKind": "episode",
+        "typicalMinutes": {
+          "min": 20,
+          "max": 35
+        },
+        "defaultOperations": [
+          "narrate",
+          "ask-why",
+          "map-or-timeline",
+          "copy-or-memorize"
+        ]
+      },
+      "guidedPrompts": [
+        "What did the hero want, and what did the hero risk?",
+        "Was this victory won by strength, counsel, courage, patience, or deceit?",
+        "Place this episode on the Troy-to-Ithaca route or Trojan War timeline."
+      ],
+      "local": {
+        "status": "public-domain-download",
+        "path": "sources/literature/colum-adventures-odysseus-tales-troy.md",
+        "upstream": "Project Gutenberg eBook 16867",
+        "licenseHint": "public-domain-us"
+      },
+      "expandsTo": [
+        "church-story-iliad",
+        "church-story-odyssey",
+        "homer-iliad-selected",
+        "homer-odyssey-selected"
+      ]
+    },
+    {
+      "id": "famous-men-greece-haaren-poland",
+      "title": "Famous Men of Greece",
+      "displayTitle": "Famous Men of Greece",
+      "author": "John H. Haaren and A. B. Poland",
+      "tier": "seed-anchor",
+      "role": "biographical-history-spine",
+      "priority": 30,
+      "essential": true,
+      "subjects": [
+        "history-geography",
+        "civics-virtue",
+        "language-arts-literature"
+      ],
+      "strands": [
+        "biography",
+        "ancient-Greece",
+        "chronology",
+        "leadership",
+        "law",
+        "citizenship"
+      ],
+      "ageBand": {
+        "min": 9,
+        "max": 12
+      },
+      "whyDistilled": "Biography is the most compact way to give a child Greek chronology: lawgivers, poets, generals, philosophers, and kings become timeline pegs rather than disconnected facts.",
+      "recommendedScope": {
+        "mode": "selected",
+        "targetUnits": 12,
+        "selectionNotes": "Start with Lycurgus/Solon, Miltiades/Themistocles, Pericles, Socrates, Alexander. Add others as review or enrichment."
+      },
+      "unitShape": {
+        "unitKind": "life",
+        "typicalMinutes": {
+          "min": 20,
+          "max": 30
+        },
+        "defaultOperations": [
+          "narrate",
+          "map-or-timeline",
+          "ask-why",
+          "compare"
+        ]
+      },
+      "guidedPrompts": [
+        "What problem did this person try to solve?",
+        "Did this person serve a city, a family, an army, himself, or the truth?",
+        "Add this life to the Greek timeline with one sentence of memory."
+      ],
+      "local": {
+        "status": "public-domain-scan",
+        "path": "sources/history/famous-men-greece-haaren-poland.md",
+        "upstream": "Local scan/OCR or public-domain library scan of the 1904 edition; avoid modern revised editions unless rights are clear.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      },
+      "expandsTo": [
+        "story-of-greeks-guerber",
+        "plutarch-greek-lives-selected",
+        "famous-men-rome-haaren-poland"
+      ]
+    },
+    {
+      "id": "boys-girls-herodotus-white",
+      "title": "The Boys' and Girls' Herodotus",
+      "displayTitle": "The Boys' and Girls' Herodotus",
+      "author": "Herodotus; John S. White, editor",
+      "tier": "seed-anchor",
+      "role": "primary-history-bridge",
+      "priority": 40,
+      "essential": true,
+      "subjects": [
+        "history-geography",
+        "language-arts-literature",
+        "civics-virtue"
+      ],
+      "strands": [
+        "primary-history",
+        "Persian-Wars",
+        "geography",
+        "customs",
+        "fact-and-rumor",
+        "inquiry"
+      ],
+      "ageBand": {
+        "min": 10,
+        "max": 13
+      },
+      "whyDistilled": "This is the first bridge from retold history into the historian's habit: asking what happened, who says so, where it happened, and whether a story is trustworthy.",
+      "recommendedScope": {
+        "mode": "selected-excerpts",
+        "targetUnits": 8,
+        "selectionNotes": "Use Croesus, Cyrus, Egypt/customs, Marathon, Thermopylae, Salamis, and one wonder-tale."
+      },
+      "unitShape": {
+        "unitKind": "history-excerpt",
+        "typicalMinutes": {
+          "min": 20,
+          "max": 35
+        },
+        "defaultOperations": [
+          "narrate",
+          "map-or-timeline",
+          "ask-why",
+          "compare"
+        ]
+      },
+      "guidedPrompts": [
+        "What did Herodotus see, hear, or report second-hand?",
+        "Find the place on a map before discussing the story.",
+        "What question would you ask Herodotus if he were in the room?"
+      ],
+      "local": {
+        "status": "public-domain-scan",
+        "path": "sources/history/boys-girls-herodotus-white.md",
+        "upstream": "Local scan/OCR or public-domain library scan of John S. White edition.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      },
+      "expandsTo": [
+        "herodotus-histories-selected",
+        "thucydides-funeral-oration-selected"
+      ]
+    },
+    {
+      "id": "pre-euclid-geometry-cards-local",
+      "title": "Pre-Euclid Geometry Cards",
+      "displayTitle": "Pre-Euclid Geometry Cards",
+      "author": "Local original, drawing on public-domain elementary geometry traditions",
+      "tier": "seed-anchor",
+      "role": "geometry-intuition-before-proof",
+      "priority": 50,
+      "essential": true,
+      "subjects": [
+        "math-logic",
+        "art-music-beauty"
+      ],
+      "strands": [
+        "point",
+        "line",
+        "angle",
+        "triangle",
+        "circle",
+        "symmetry",
+        "construction",
+        "spatial-imagination"
+      ],
+      "ageBand": {
+        "min": 8,
+        "max": 12
+      },
+      "whyDistilled": "Before formal proof, a child needs to see, draw, fold, rotate, compare, and name geometric realities. A local card deck can be shorter and cleaner than any 19th-century textbook.",
+      "recommendedScope": {
+        "mode": "complete",
+        "targetUnits": 24,
+        "selectionNotes": "Cards should be physical-action first: draw, fold, cut, construct, explain."
+      },
+      "unitShape": {
+        "unitKind": "demonstration-card",
+        "typicalMinutes": {
+          "min": 10,
+          "max": 20
+        },
+        "defaultOperations": [
+          "draw-or-demonstrate",
+          "copy-or-memorize",
+          "compare"
+        ]
+      },
+      "guidedPrompts": [
+        "Draw it two ways, then explain what stayed the same.",
+        "What definition would let another person recognize this figure?",
+        "Can you make a counterexample?"
+      ],
+      "local": {
+        "status": "local-original",
+        "path": "sources/math/pre-euclid-geometry-cards.json",
+        "upstream": "Authored locally; may cite Thomas Hill-style pre-Euclidean visual habits in notes, but do not require his text for the seed.",
+        "licenseHint": "local-author-owned"
+      },
+      "expandsTo": [
+        "first-lessons-geometry-hill",
+        "euclid-book1-casey-byrne"
+      ]
+    },
+    {
+      "id": "euclid-book1-casey-byrne",
+      "title": "Euclid Book I: Definitions, Common Notions, and Selected Propositions",
+      "displayTitle": "Euclid Book I — Visual Proof Pack",
+      "author": "Euclid; John Casey edition; Oliver Byrne visual reference",
+      "tier": "seed-anchor",
+      "role": "proof-and-beauty-spine",
+      "priority": 60,
+      "essential": true,
+      "subjects": [
+        "math-logic",
+        "art-music-beauty",
+        "classical-languages"
+      ],
+      "strands": [
+        "definition",
+        "axiom",
+        "proof",
+        "construction",
+        "triangle",
+        "parallel",
+        "Pythagorean-theorem",
+        "beauty-of-order"
+      ],
+      "ageBand": {
+        "min": 10,
+        "max": 14
+      },
+      "whyDistilled": "A small selection from Book I teaches that math is ordered speech and visible reasoning, not just answer-getting. Byrne-style diagrams make the beauty visible while Casey-style text keeps the proof tradition nearby.",
+      "recommendedScope": {
+        "mode": "selected",
+        "targetUnits": 10,
+        "selectionNotes": "Use definitions, postulates/common notions, propositions I.1, I.5, I.13, I.15, I.26, I.29, I.32, I.47 as a long arc."
+      },
+      "unitShape": {
+        "unitKind": "definition-or-proposition",
+        "typicalMinutes": {
+          "min": 15,
+          "max": 30
+        },
+        "defaultOperations": [
+          "draw-or-demonstrate",
+          "copy-or-memorize",
+          "ask-why"
+        ]
+      },
+      "guidedPrompts": [
+        "What is given, what is required, and what is proven?",
+        "Redraw the figure without letters, then explain the proof in your own words.",
+        "Which earlier idea does this proof depend on?"
+      ],
+      "local": {
+        "status": "public-domain-download",
+        "path": "sources/math/euclid-book1-casey-byrne.md",
+        "upstream": "Project Gutenberg eBook 21076 for Casey text; Byrne diagrams from public-domain scan where stored separately with attribution.",
+        "licenseHint": "public-domain-us-check-diagram-source"
+      },
+      "expandsTo": [
+        "euclid-elements-book2-selected",
+        "pythagoras-music-number-local"
+      ]
+    },
+    {
+      "id": "comstock-handbook-nature-study-selected",
+      "title": "Handbook of Nature Study — Selected Local Observations",
+      "displayTitle": "Nature Study Observation Pack",
+      "author": "Anna Botsford Comstock; local selections and prompts",
+      "tier": "seed-anchor",
+      "role": "observation-before-explanation",
+      "priority": 70,
+      "essential": true,
+      "subjects": [
+        "science-nature",
+        "language-arts-literature",
+        "art-music-beauty"
+      ],
+      "strands": [
+        "observation",
+        "nature-journal",
+        "plants",
+        "animals",
+        "weather",
+        "field-notes",
+        "drawing"
+      ],
+      "ageBand": {
+        "min": 7,
+        "max": 12
+      },
+      "whyDistilled": "A small set of local nature prompts prevents science from becoming abstract too early. The child must look, name, draw, describe, and wonder before receiving explanations.",
+      "recommendedScope": {
+        "mode": "selected-and-localized",
+        "targetUnits": 16,
+        "selectionNotes": "Do not import the whole 900-page handbook as the first experience. Build local seasonal prompts: bird, tree, flower, insect, sky, weather, water, stone."
+      },
+      "unitShape": {
+        "unitKind": "field-observation",
+        "typicalMinutes": {
+          "min": 15,
+          "max": 40
+        },
+        "defaultOperations": [
+          "draw-or-demonstrate",
+          "narrate",
+          "compare"
+        ]
+      },
+      "guidedPrompts": [
+        "Look silently for one minute before naming anything.",
+        "Draw what you actually see, then write three exact observations.",
+        "What changed since the last time you saw this?"
+      ],
+      "local": {
+        "status": "public-domain-scan",
+        "path": "sources/science/comstock-nature-study-selected.json",
+        "upstream": "Local excerpts from a verified public-domain scan of Handbook of Nature Study; prompts localized by family/teacher.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      },
+      "expandsTo": [
+        "fabre-insect-life-selected",
+        "local-seasonal-nature-calendar"
+      ]
+    },
+    {
+      "id": "greek-latin-starter-cards-local",
+      "title": "Greek & Latin Starter Cards",
+      "displayTitle": "Greek & Latin Starter Cards",
+      "author": "Local original",
+      "tier": "seed-anchor",
+      "role": "language-gate-opener",
+      "priority": 80,
+      "essential": true,
+      "subjects": [
+        "classical-languages",
+        "language-arts-literature",
+        "history-geography"
+      ],
+      "strands": [
+        "Greek-alphabet",
+        "Latin-roots",
+        "names",
+        "pronunciation",
+        "copywork",
+        "grammar-awareness"
+      ],
+      "ageBand": {
+        "min": 8,
+        "max": 12
+      },
+      "whyDistilled": "A child does not need a full grammar course to begin. The concentrated seed is alphabet comfort, beautiful names, roots that unlock English, and the idea that language has form.",
+      "recommendedScope": {
+        "mode": "complete",
+        "targetUnits": 36,
+        "selectionNotes": "24 Greek letters, 12 Homer/history names, 20 Latin/Greek roots, 6 grammar-shape cards."
+      },
+      "unitShape": {
+        "unitKind": "language-card",
+        "typicalMinutes": {
+          "min": 5,
+          "max": 12
+        },
+        "defaultOperations": [
+          "copy-or-memorize",
+          "compare",
+          "narrate"
+        ]
+      },
+      "guidedPrompts": [
+        "Copy the letter/name carefully and say it aloud.",
+        "Find an English word that carries this root.",
+        "Which names from today's story contain sounds you can now recognize?"
+      ],
+      "local": {
+        "status": "local-original",
+        "path": "sources/languages/greek-latin-starter-cards.json",
+        "upstream": "Authored locally from standard alphabet/root knowledge and names encountered in seed texts.",
+        "licenseHint": "local-author-owned"
+      },
+      "expandsTo": [
+        "latin-primer-owned-required",
+        "attic-greek-primer-owned-required",
+        "greek-new-testament-alphabet-reading-selected"
+      ]
+    },
+    {
+      "id": "greek-art-picture-study-pack-local",
+      "title": "Greek Art & Architecture Picture Study Pack",
+      "displayTitle": "Greek Picture Study Pack",
+      "author": "Local curator; public-domain museum/library assets where verified",
+      "tier": "seed-anchor",
+      "role": "aesthetic-attention-and-visual-memory",
+      "priority": 90,
+      "essential": true,
+      "subjects": [
+        "art-music-beauty",
+        "history-geography",
+        "math-logic",
+        "civics-virtue"
+      ],
+      "strands": [
+        "picture-study",
+        "architecture",
+        "sculpture",
+        "proportion",
+        "attention",
+        "description"
+      ],
+      "ageBand": {
+        "min": 7,
+        "max": 12
+      },
+      "whyDistilled": "A tiny image set makes beauty concrete: the child studies form, proportion, courage, grief, victory, and public memory without needing an art-history textbook.",
+      "recommendedScope": {
+        "mode": "curated-assets",
+        "targetUnits": 8,
+        "selectionNotes": "Start with Parthenon, Caryatid, Discobolus, Winged Victory, Laocoön, Greek vase scene, Doric/Ionic/Corinthian columns, one map/plan of Athens."
+      },
+      "unitShape": {
+        "unitKind": "picture-study-plate",
+        "typicalMinutes": {
+          "min": 10,
+          "max": 20
+        },
+        "defaultOperations": [
+          "draw-or-demonstrate",
+          "narrate",
+          "compare"
+        ]
+      },
+      "guidedPrompts": [
+        "Look for three minutes, then hide the image and describe it.",
+        "What line, shape, gesture, or proportion makes it beautiful or memorable?",
+        "Connect this work to a person, city, virtue, or geometry idea."
+      ],
+      "local": {
+        "status": "curated-public-domain-assets",
+        "path": "sources/beauty/greek-picture-study-pack.json",
+        "upstream": "Verified public-domain/open-access museum and library assets, stored with per-asset attribution.",
+        "licenseHint": "per-asset-check-required"
+      },
+      "expandsTo": [
+        "greek-music-number-local",
+        "renaissance-picture-study-pack-local"
+      ]
+    }
+  ],
+  "nearExpansionCandidates": [
+    {
+      "id": "tanglewood-tales-hawthorne",
+      "title": "Tanglewood Tales",
+      "author": "Nathaniel Hawthorne",
+      "addWhen": "The learner needs a gentler myth bridge or wants more pre-Homer Greek mythology.",
+      "whyNotSeed": "Useful, but overlaps with Aesop plus Colum; keep as prelude/enrichment rather than a required core.",
+      "local": {
+        "status": "public-domain-download",
+        "path": "sources/literature/tanglewood-tales-hawthorne.md",
+        "upstream": "Project Gutenberg eBook 976",
+        "licenseHint": "public-domain-us"
+      }
+    },
+    {
+      "id": "story-of-greeks-guerber",
+      "title": "The Story of the Greeks",
+      "author": "H. A. Guerber",
+      "addWhen": "The learner needs a smoother narrative history spine after or alongside selected Famous Men lives.",
+      "whyNotSeed": "Excellent, but duplicates some function of Famous Men. Add when more story-continuity is needed.",
+      "local": {
+        "status": "public-domain-download",
+        "path": "sources/history/story-of-greeks-guerber.md",
+        "upstream": "Project Gutenberg eBook 23495",
+        "licenseHint": "public-domain-us"
+      }
+    },
+    {
+      "id": "golden-fleece-colum",
+      "title": "The Golden Fleece and the Heroes Who Lived Before Achilles",
+      "author": "Padraic Colum",
+      "addWhen": "The learner loves Colum and needs the Argonaut/pre-Achilles myth cycle.",
+      "whyNotSeed": "Beautiful and coherent, but the first seed should not become an all-myth shelf.",
+      "local": {
+        "status": "public-domain-download",
+        "path": "sources/literature/golden-fleece-colum.md",
+        "upstream": "Project Gutenberg eBook 2395",
+        "licenseHint": "public-domain-us"
+      }
+    },
+    {
+      "id": "church-story-iliad",
+      "title": "The Story of the Iliad",
+      "author": "Alfred J. Church",
+      "addWhen": "The learner finishes Colum and needs a more linear war narrative before selected adult Homer.",
+      "whyNotSeed": "Second-pass Iliad clarity, not the first epic spine.",
+      "local": {
+        "status": "public-domain-scan",
+        "path": "sources/literature/church-story-iliad.md",
+        "upstream": "Verify public-domain scan/source before import.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      }
+    },
+    {
+      "id": "church-story-odyssey",
+      "title": "The Story of the Odyssey",
+      "author": "Alfred J. Church",
+      "addWhen": "The learner wants more episode clarity and map work after Colum.",
+      "whyNotSeed": "Second-pass Odyssey clarity, not required at launch.",
+      "local": {
+        "status": "public-domain-scan",
+        "path": "sources/literature/church-story-odyssey.md",
+        "upstream": "Verify public-domain scan/source before import.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      }
+    },
+    {
+      "id": "first-lessons-geometry-hill",
+      "title": "First Lessons in Geometry",
+      "author": "Thomas Hill",
+      "addWhen": "The local Pre-Euclid cards need a fuller public-domain textual ancestor or teacher reference.",
+      "whyNotSeed": "Harder to source cleanly than local cards plus public-domain Euclid; use as reference after the card deck exists.",
+      "local": {
+        "status": "metadata-only",
+        "path": "sources/math/first-lessons-geometry-hill.md",
+        "upstream": "Sourcing target; verify scan/license before import.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      }
+    },
+    {
+      "id": "plutarch-greek-lives-selected",
+      "title": "Selected Greek Lives",
+      "author": "Plutarch; public-domain English translation or child adaptation",
+      "addWhen": "The learner can compare character, motive, civic choice, and consequence across multiple lives.",
+      "whyNotSeed": "Plutarch is central later, but Famous Men is a cleaner first biography spine for age 10.",
+      "local": {
+        "status": "metadata-only",
+        "path": "sources/history/plutarch-greek-lives-selected.md",
+        "upstream": "Choose translation/adaptation later.",
+        "licenseHint": "public-domain-us-check-source-edition"
+      }
+    }
+  ],
+  "doNotImportAsSeed": [
+    {
+      "id": "black-ships-before-troy-sutcliff",
+      "reason": "Pedagogically useful, but modern copyright; keep as owned-required metadata only."
+    },
+    {
+      "id": "first-form-latin-memoria-press",
+      "reason": "Strong structured course, but commercial curriculum; do not treat as local source text."
+    },
+    {
+      "id": "code-cracker-classical-academic-press",
+      "reason": "Useful Greek intro, but commercial; local starter cards cover the app-native seed need."
+    },
+    {
+      "id": "full-handbook-nature-study-as-one-source",
+      "reason": "Too large for guided suggestions; use selected localized observations first."
+    }
+  ],
+  "guidedSuggestionRules": {
+    "defaultRecommendationOrder": [
+      "resume-unfinished-seed-anchor",
+      "fill-underrepresented-school-subject",
+      "review-low-mastery-prior-lesson",
+      "choose-next-chronological-history-peg",
+      "alternate-story-with-observation-or-proof"
+    ],
+    "avoid": [
+      "suggesting a broad new book before the seed bundle has evidence of completion",
+      "turning every lesson into comprehension questions",
+      "using modern commercial resources as if they are bundled source texts",
+      "suggesting source text that has local.status metadata-only unless parent has enabled it"
+    ],
+    "minimumLessonEvidence": {
+      "fields": [
+        "sourceTextId",
+        "subjectIds",
+        "operationIds",
+        "childNarration",
+        "parentOrTutorNote",
+        "masteryState"
+      ],
+      "masteryStates": [
+        "introduced",
+        "narrated",
+        "discussed",
+        "demonstrated",
+        "review-ready",
+        "secure"
+      ]
+    }
+  },
+  "suggestedFileLayout": [
+    "curricula/young-mind-education/manifest.json",
+    "curricula/young-mind-education/sources/literature/*.md",
+    "curricula/young-mind-education/sources/history/*.md",
+    "curricula/young-mind-education/sources/math/*.md|*.json",
+    "curricula/young-mind-education/sources/science/*.json",
+    "curricula/young-mind-education/sources/languages/*.json",
+    "curricula/young-mind-education/sources/beauty/*.json",
+    "curricula/young-mind-education/attribution/*.json"
+  ]
+}

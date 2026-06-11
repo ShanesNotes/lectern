@@ -94,6 +94,19 @@ export function lessonInfo(profileId, absPath) {
   return { file, title, mtime, url: `/workspaces/${profileId}/lessons/${file}` };
 }
 
+/* ---------- lesson index (curriculum portfolio, maintained by the tutor) ---------- */
+
+export function loadLessonIndex(profileId) {
+  try {
+    const raw = JSON.parse(
+      fs.readFileSync(path.join(workspaceDir(profileId), "lesson-index.json"), "utf8")
+    );
+    return raw && typeof raw === "object" ? raw : {};
+  } catch {
+    return {}; // missing or mid-write — the portfolio just shows lessons as unsorted
+  }
+}
+
 export function titleFromFilename(f) {
   return f
     .replace(/\.html$/, "")

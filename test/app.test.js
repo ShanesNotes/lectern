@@ -92,6 +92,45 @@ test("chat streams the SSE protocol in order and ends the stream", async () => {
   assert.equal(events[2].data.file, "0001-x.html");
 });
 
+test("portfolio endpoint groups lessons by subject and suggests from the seed", async () => {
+  const lessonsDir = path.join(tmp, "hazel", "lessons");
+  fs.writeFileSync(
+    path.join(lessonsDir, "0001-odysseus.html"),
+    "<html><head><title>Odysseus Sets Sail</title></head><body></body></html>"
+  );
+  fs.writeFileSync(
+    path.join(tmp, "hazel", "lesson-index.json"),
+    JSON.stringify({
+      version: 1,
+      learnerId: "hazel",
+      lessons: [
+        {
+          file: "lessons/0001-odysseus.html",
+          title: "Odysseus Sets Sail",
+          subjects: [{ id: "language-arts-literature", strand: "Odysseus" }],
+          sourceTextIds: ["colum-adventures-odysseus-tales-troy"],
+          mastery: "narrated",
+        },
+      ],
+    })
+  );
+
+  const res = await fetch(`${base}/api/profiles/hazel/portfolio`);
+  assert.equal(res.status, 200);
+  const { portfolio, suggestions } = await res.json();
+
+  const literature = portfolio.subjects.find((s) => s.id === "language-arts-literature");
+  assert.equal(literature.count, 1);
+  assert.equal(literature.lessons[0].mastery, "narrated");
+
+  const lit = suggestions.subjects.find((s) => s.subjectId === "language-arts-literature");
+  assert.equal(lit.suggestions[0].id, "colum-adventures-odysseus-tales-troy");
+  assert.equal(suggestions.expansion.unlocked, false);
+
+  // Unknown profile still 404s.
+  assert.equal((await fetch(`${base}/api/profiles/ghost/portfolio`)).status, 404);
+});
+
 test("unknown API routes return JSON, not HTML", async () => {
   const res = await fetch(`${base}/api/nope`);
   assert.equal(res.status, 404);
