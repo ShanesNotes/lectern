@@ -4,8 +4,18 @@
 import express from "express";
 import { config } from "./config.js";
 import * as store from "./store.js";
+import * as education from "./education.js";
 
 export function createApp({ profiles, runTurn }) {
+  // Load the curriculum once; a broken/missing manifest degrades the portfolio
+  // route to 503 but must never take down chat.
+  let manifest = null;
+  try {
+    manifest = education.loadCurriculumManifest();
+  } catch (err) {
+    console.error("curriculum manifest unavailable:", err.message);
+  }
+
   const app = express();
   app.disable("x-powered-by");
   app.use(express.json({ limit: config.bodyLimit }));
@@ -36,6 +46,22 @@ export function createApp({ profiles, runTurn }) {
   app.get("/api/profiles/:id/lessons", (req, res) => {
     const profile = findProfile(req, res);
     if (profile) res.json(store.listLessons(profile.id));
+  });
+
+  // The learner's portfolio: lessons grouped by school subject, plus guided
+  // "what next" suggestions from the local curriculum manifest. Read-only.
+  app.get("/api/profiles/:id/portfolio", (req, res) => {
+    const profile = findProfile(req, res);
+    if (!profile) return;
+    if (!manifest) return res.status(503).json({ error: "curriculum unavailable" });
+
+    const portfolio = education.buildLessonPortfolio({
+      manifest,
+      lessons: store.listLessons(profile.id),
+      lessonIndex: store.loadLessonIndex(profile.id),
+    });
+    const suggestions = education.suggestGuidedLearning({ profile, manifest, portfolio });
+    res.json({ portfolio, suggestions });
   });
 
   app.get("/api/profiles/:id/history", (req, res) => {

@@ -6,7 +6,26 @@ import { query } from "@anthropic-ai/claude-agent-sdk";
 import path from "node:path";
 import { config } from "./config.js";
 import { buildSystemPrompt } from "./prompt.js";
+import { loadCurriculumManifest, buildPromptDigest } from "./education.js";
 import * as store from "./store.js";
+
+// The curriculum manifest is static for the life of the process. If it's broken
+// or absent the tutor simply teaches without a guided spine — never fatal.
+let curriculumManifest = null;
+try {
+  curriculumManifest = loadCurriculumManifest();
+} catch (err) {
+  console.error("tutor: curriculum manifest unavailable:", err.message);
+}
+
+function curriculumDigestFor(profile) {
+  if (!curriculumManifest || profile.adult) return "";
+  try {
+    return buildPromptDigest({ manifest: curriculumManifest, profile });
+  } catch {
+    return "";
+  }
+}
 
 // Friendly labels for tool activity, shown quietly in the chat while the tutor works.
 const TOOL_STATUS = {
@@ -95,7 +114,7 @@ export async function runTurn(profile, userMessage, emit, abort = new AbortContr
         resume,
         abortController: abort,
         model: config.model,
-        systemPrompt: buildSystemPrompt(profile),
+        systemPrompt: buildSystemPrompt(profile, curriculumDigestFor(profile)),
         allowedTools: ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
         disallowedTools: ["Bash", "Agent", "AskUserQuestion"],
         // acceptEdits + allowedTools auto-approves everything the tutor needs

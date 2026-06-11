@@ -2,8 +2,17 @@
 // (https://github.com/mattpocock/skills/tree/main/skills/productivity/teach),
 // adapted per profile: full-fidelity /teach for adults, age-adapted for kids.
 
-export function buildSystemPrompt(profile) {
-  return profile.adult ? buildAdultPrompt(profile) : buildKidPrompt(profile);
+// `curriculumDigest` is optional pre-rendered text (built by education.js from the
+// local curriculum manifest) — passed in so this module stays free of I/O.
+export function buildSystemPrompt(profile, curriculumDigest = "") {
+  const base = profile.adult ? buildAdultPrompt(profile) : buildKidPrompt(profile);
+  if (!curriculumDigest || profile.adult) return base;
+  // Splice the curriculum in front of the kid prompt's closing line so the
+  // sign-off ("Now be the teacher…") stays last.
+  const closer = "\n\nNow be the teacher every kid wishes they had.";
+  return base.endsWith(closer)
+    ? base.slice(0, -closer.length) + `\n\n${curriculumDigest}` + closer
+    : `${base}\n\n${curriculumDigest}`;
 }
 
 function buildAdultPrompt(profile) {

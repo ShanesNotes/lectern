@@ -77,10 +77,17 @@ resumable tutor session** — progress and portfolios never mix.
   - `learning-records/*.md` — what they've genuinely understood, so each session teaches
     the *next* thing, not the same thing
   - `NOTES.md` — the tutor's notes on how this learner likes to learn
+  - `lesson-index.json` — the learner's portfolio: lessons tagged by school subject,
+    source text, and mastery (maintained by the tutor after real evidence of learning)
 - Sessions **resume automatically** — the tutor remembers the conversation across
   messages and server restarts, separately per profile.
 - When the agent writes a lesson file, a hook pushes it to the browser over SSE and the
   lesson appears immediately.
+- A local **guided curriculum** (`curricula/young-mind-education/`) gives the kid tutors
+  a suggestion spine — the "eight-anchor Hellenic seed" of public-domain source texts,
+  grouped by school subject. Ask "what should I learn next?" and the tutor suggests from
+  the seed; `GET /api/profiles/:id/portfolio` reports lessons grouped by subject plus
+  guided suggestions. Expansion texts unlock only after the seed shows real evidence.
 - Safety rails: the agent has no Bash access, can only write inside the active profile's
   workspace, lessons render in a sandboxed iframe, and the kid prompts enforce
   age-appropriate content.

@@ -17,6 +17,7 @@ protocols; everything Lectern remembers is plain files.
 │   tutor.js   one agent turn: lock → SDK query → events → persist     │
 │   prompt.js  /teach methodology per profile (kid- or adult-flavored) │
 │   store.js   ALL filesystem persistence (the only fs in the system)  │
+│   education.js  curriculum manifest, portfolio, guided suggestions   │
 │   config.js  ALL knobs and env (the only process.env in the system)  │
 └────────┬─────────────────────────────────────────────────────────────┘
          │ Claude Agent SDK (spawns Claude Code CLI; subscription auth)
@@ -24,6 +25,7 @@ protocols; everything Lectern remembers is plain files.
 │ workspaces/<profileId>/   — a literal /teach skill workspace         │
 │   MISSION.md, NOTES.md, lessons/*.html, learning-records/*.md        │
 │   .session.json (agent session id), .chat.json (transcript)          │
+│   lesson-index.json (portfolio: subjects, sources, mastery)          │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -34,6 +36,7 @@ protocols; everything Lectern remembers is plain files.
 | `config.js` | Every knob, every `process.env` read | — |
 | `store.js` | Every `fs` call; workspace layout knowledge | Know about HTTP, the SDK, or prompts |
 | `prompt.js` | The /teach methodology, per-profile | Do I/O |
+| `education.js` | Curriculum manifest, lesson portfolio, guided suggestions | Know about HTTP or the SDK (pure, except reading its own manifest) |
 | `tutor.js` | The turn lifecycle: lock → query → emit → persist → unlock | Touch `res`/HTTP; read env |
 | `app.js` | Routes, SSE framing, heartbeats, abort wiring | Call the SDK directly (gets `runTurn` injected) |
 | `index.js` | Process concerns: validation, diagnostics, listen, signals | Contain behavior worth testing |
